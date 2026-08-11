@@ -1,0 +1,68 @@
+backend:
+  name: github
+  branch: main
+  repo: Newibebrah/Jiwaku
+  base_url: https://YOUR_DOMAIN
+  auth_endpoint: /api/auth
+  auth_scope: repo
+
+publish_mode: editorial_workflow
+
+media_folder: public/uploads
+public_folder: /uploads
+
+collections:
+  - name: site
+    label: Pengaturan Situs
+    files:
+      - name: settings
+        label: Pengaturan
+        file: content/site.md
+        fields:
+          - { label: "Judul", name: "title", widget: "string" }
+          - { label: "Tagline", name: "tagline", widget: "string" }
+          - { label: "Deskripsi", name: "description", widget: "text" }
+          - { label: "Teks Footer", name: "footer_text", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Lokasi", name: "location", widget: "string" }
+          - { label: "Sosial Media", name: "social", widget: "string" }
+
+  - name: poems
+    label: Puisi
+    label_singular: Puisi
+    folder: content/poems
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} — {{date}}"
+    fields:
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Tanggal", name: "date", widget: "datetime" }
+      - { label: "Baris Pembuka", name: "excerpt", widget: "text" }
+      - { label: "Isi Puisi", name: "body", widget: "markdown" }
+
+  - name: writings
+    label: Tulisan
+    label_singular: Tulisan
+    folder: content/writings
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} — {{date}}"
+    fields:
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Tanggal", name: "date", widget: "datetime" }
+      - { label: "Ringkasan", name: "excerpt", widget: "text" }
+      - { label: "Isi", name: "body", widget: "markdown" }
+
+  - name: photos
+    label: Fotografi
+    label_singular: Foto
+    folder: content/photos
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} — {{location}}"
+    fields:
+      - { label: "Judul", name: "title", widget: "string" }
+      - { label: "Tanggal", name: "date", widget: "datetime" }
+      - { label: "Lokasi", name: "location", widget: "string" }
+      - { label: "Foto", name: "image", widget: "image" }
+      - { label: "Keterangan", name: "caption", widget: "text" }
