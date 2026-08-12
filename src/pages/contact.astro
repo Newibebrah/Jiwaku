@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const [site] = await getCollection('site');
+const siteData = site?.data || {};
+const email = siteData.email || 'placeholder@example.com';
+const location = siteData.location || 'Placeholder: kota Anda';
+const social = siteData.social || 'Placeholder: @username';
+---
+
+<BaseLayout page="contact" title="Let's Be Friends" description="Hubungi JIWAKU — ayo jadi teman.">
+    <main class="wrapper">
+        <section class="page-hero reveal">
+            <h1>Let's Be Friends<span class="text-accent">.</span></h1>
+            <p>Placeholder: ajakan untuk menghubungi Anda, misalnya untuk kolaborasi atau sekadar menyapa.</p>
+        </section>
+
+        <section class="section reveal">
+            <div class="contact-grid">
+                <div class="contact-info parallax">
+                    <h3>Contact Info</h3>
+                    <p>Placeholder: tulis alamat email, lokasi, atau media sosial Anda.</p>
+                    <div class="contact-list">
+                        <div class="contact-item">
+                            <i class="bx bx-envelope"></i>
+                            <div>
+                                <strong>Email</strong>
+                                <span>{email}</span>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="bx bx-map-pin"></i>
+                            <div>
+                                <strong>Lokasi</strong>
+                                <span>{location}</span>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="bx bx-link"></i>
+                            <div>
+                                <strong>Sosial Media</strong>
+                                <span>{social}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORMSPREE: ganti YOUR_FORM_ID dengan ID form di https://formspree.io -->
+                <div class="form-wrap parallax">
+                    <svg class="plane" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M2 12 22 2 13 22l-3-8-8-2z"></path>
+                    </svg>
+                    <form class="form" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                        <div class="form-group">
+                            <label for="name">Nama</label>
+                            <input type="text" id="name" name="name" placeholder="Placeholder: nama Anda" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="placeholder@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Pesan</label>
+                            <textarea id="message" name="message" placeholder="Tuliskan pesanmu untuk angin..." required></textarea>
+                        </div>
+                        <button class="btn" type="submit">
+                            <i class="bx bx-send"></i> Kirim Pesan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite">
+        <i class="bx bx-paper-plane"></i>
+        <span>Pesanmu telah melayang.</span>
+    </div>
+</BaseLayout>

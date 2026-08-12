@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+    const poems = await getCollection('poems');
+    return poems.map((poem) => ({
+        params: { slug: poem.id },
+        props: { poem },
+    }));
+}
+
+const { poem } = Astro.props;
+const { Content } = await render(poem);
+const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+---
+
+<BaseLayout page="poem" title={poem.data.title} description={poem.data.excerpt}>
+    <main class="wrapper">
+        <section class="section reveal">
+            <div class="detail">
+                <a class="detail-back" href="/poem"><i class="bx bx-chevron-left"></i> Semua Puisi</a>
+                <h1 class="detail-title">{poem.data.title}</h1>
+                <p class="detail-meta">{fmtDate(poem.data.date)}</p>
+                <div class="detail-body">
+                    <div class="poem-lines"><Content /></div>
+                </div>
+            </div>
+        </section>
+    </main>
+</BaseLayout>

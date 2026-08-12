@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout page="home">
+    <main class="home-main">
+        <!-- NARASI HOME: isi teks di dalam <p class="home-text"> tiap section -->
+        <section class="home-section">
+            <div class="wrapper home-grid parallax reveal">
+                <p class="home-kicker">JIWAKU</p>
+                <h1 class="home-title">Jiwaku<span class="text-accent">.</span></h1>
+                <p class="home-text">— Tulis narasi pembuka tentang dirimu di sini —</p>
+                <p class="home-note">(kutipan pembuka yang mewakili seluruh isi jiwa)</p>
+            </div>
+            <div class="home-scroll-hint" aria-hidden="true">
+                <i class="bx bx-chevron-down"></i>
+            </div>
+        </section>
+
+        <section class="home-section align-left">
+            <div class="wrapper home-grid parallax reveal">
+                <p class="home-kicker accent-pink">01 — Puisi</p>
+                <h2 class="home-title">Puisi</h2>
+                <p class="home-text">— Tulis narasi panjang tentang keterikatanmu dengan puisi di sini —</p>
+            </div>
+        </section>
+
+        <section class="home-section align-right">
+            <div class="wrapper home-grid parallax reveal">
+                <p class="home-kicker accent-amber">02 — Photography</p>
+                <h2 class="home-title">Photography</h2>
+                <p class="home-text">— Tulis narasi panjang tentang keterikatanmu dengan photography di sini —</p>
+            </div>
+        </section>
+
+        <section class="home-section align-left">
+            <div class="wrapper home-grid parallax reveal">
+                <p class="home-kicker accent-violet">03 — Menulis</p>
+                <h2 class="home-title">Menulis</h2>
+                <p class="home-text">— Tulis narasi panjang tentang keterikatanmu dengan menulis di sini —</p>
+            </div>
+        </section>
+
+        <section class="home-section is-last">
+            <div class="wrapper home-grid parallax reveal">
+                <p class="home-kicker">Epilog</p>
+                <h2 class="home-title">Ketiganya adalah jiwaku<span class="text-accent">.</span></h2>
+                <p class="home-text">— Tulis kalimat penutup yang mengikat ketiganya di sini —</p>
+            </div>
+        </section>
+    </main>
+</BaseLayout>

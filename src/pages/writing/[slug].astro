@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+    const writings = await getCollection('writings');
+    return writings.map((writing) => ({
+        params: { slug: writing.id },
+        props: { writing },
+    }));
+}
+
+const { writing } = Astro.props;
+const { Content } = await render(writing);
+const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+---
+
+<BaseLayout page="writing" title={writing.data.title} description={writing.data.excerpt}>
+    <main class="wrapper">
+        <section class="section reveal">
+            <div class="detail">
+                <a class="detail-back" href="/writing"><i class="bx bx-chevron-left"></i> Semua Tulisan</a>
+                <h1 class="detail-title">{writing.data.title}</h1>
+                <p class="detail-meta">{fmtDate(writing.data.date)}</p>
+                <div class="detail-body"><Content /></div>
+            </div>
+        </section>
+    </main>
+
+    <div class="vignette" aria-hidden="true"></div>
+</BaseLayout>

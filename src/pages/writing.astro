@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const writings = (await getCollection('writings')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+---
+
+<BaseLayout page="writing" title="Writing" description="Kumpulan tulisan dari JIWAKU.">
+    <main class="wrapper">
+        <section class="page-hero reveal">
+            <h1>Writing<span class="text-accent">.</span></h1>
+            <p>Placeholder: deskripsi singkat halaman tulisan Anda.</p>
+        </section>
+
+        <section class="section reveal">
+            {
+                writings.length === 0 ? (
+                    <div class="empty">
+                        <div>
+                            <i class="bx bx-pencil"></i>
+                            <h2>Belum ada tulisan</h2>
+                            <p>Tulisan akan terhubung ke dashboard admin. Untuk sekarang, biarkan halaman ini kosong.</p>
+                            <p class="empty-note">— manuskrip akan hadir di sini —</p>
+                        </div>
+                    </div>
+                ) : (
+                    <div class="list">
+                        {
+                            writings.map((writing) => (
+                                <a class="list-item" href={`/writing/${writing.id}/`}>
+                                    <h3>{writing.data.title}</h3>
+                                    {writing.data.excerpt && <p>{writing.data.excerpt}</p>}
+                                    <span class="list-meta"><i class="bx bx-calendar"></i>{fmtDate(writing.data.date)}</span>
+                                </a>
+                            ))
+                        }
+                    </div>
+                )
+            }
+        </section>
+    </main>
+
+    <div class="vignette" aria-hidden="true"></div>
+</BaseLayout>

@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const photos = (await getCollection('photos')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+---
+
+<BaseLayout page="photography" title="Photography" description="Galeri fotografi dari JIWAKU.">
+    <main class="wrapper">
+        <section class="page-hero reveal">
+            <h1>Photography<span class="text-accent">.</span></h1>
+            <p>Placeholder: deskripsi singkat halaman fotografi Anda.</p>
+        </section>
+
+        <section class="section reveal">
+            {
+                photos.length === 0 ? (
+                    <div class="empty">
+                        <div>
+                            <i class="bx bx-camera"></i>
+                            <h2>Belum ada foto</h2>
+                            <p>Galeri foto akan terhubung ke dashboard admin. Untuk sekarang, biarkan halaman ini kosong.</p>
+                            <p class="empty-note">— frame foto akan berserakan di sini —</p>
+                        </div>
+                    </div>
+                ) : (
+                    <div class="gallery">
+                        {
+                            photos.map((photo) => (
+                                <figure class="photo-card">
+                                    <img src={photo.data.image} alt={photo.data.title} loading="lazy" />
+                                    <figcaption class="photo-overlay">
+                                        <h3>{photo.data.title}</h3>
+                                        <span>{photo.data.location || fmtDate(photo.data.date)}</span>
+                                    </figcaption>
+                                </figure>
+                            ))
+                        }
+                    </div>
+                )
+            }
+        </section>
+    </main>
+</BaseLayout>

@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const poems = (await getCollection('poems')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+---
+
+<BaseLayout page="poem" title="Poem" description="Kumpulan puisi dari JIWAKU.">
+    <main class="wrapper">
+        <section class="page-hero reveal">
+            <h1>Poem<span class="text-accent">.</span></h1>
+            <p>Placeholder: deskripsi singkat halaman puisi Anda.</p>
+        </section>
+
+        <section class="section reveal">
+            {
+                poems.length === 0 ? (
+                    <div class="empty">
+                        <div>
+                            <i class="bx bx-book-heart"></i>
+                            <h2>Belum ada puisi</h2>
+                            <p>Konten puisi akan terhubung ke dashboard admin. Untuk sekarang, biarkan halaman ini kosong.</p>
+                            <p class="empty-note">— tempat tulisan puisi akan hadir —</p>
+                        </div>
+                    </div>
+                ) : (
+                    <div class="list">
+                        {
+                            poems.map((poem) => (
+                                <a class="list-item" href={`/poem/${poem.id}/`}>
+                                    <h3>{poem.data.title}</h3>
+                                    {poem.data.excerpt && <p>{poem.data.excerpt}</p>}
+                                    <span class="list-meta"><i class="bx bx-calendar"></i>{fmtDate(poem.data.date)}</span>
+                                </a>
+                            ))
+                        }
+                    </div>
+                )
+            }
+        </section>
+    </main>
+
+    <div class="visualizer" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+    </div>
+</BaseLayout>

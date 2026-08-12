@@ -1,0 +1,32 @@
+---
+const { page = '', siteTitle = 'JIWAKU' } = Astro.props;
+
+const links = [
+    { href: '/', label: 'Home', key: 'home' },
+    { href: '/poem', label: 'Poem', key: 'poem' },
+    { href: '/photography', label: 'Photography', key: 'photography' },
+    { href: '/writing', label: 'Writing', key: 'writing' },
+];
+---
+
+<header>
+    <nav class="navbar">
+        <div class="wrapper navbar-inner">
+            <a class="navbar-logo" href="/">{siteTitle}<span>.</span></a>
+            <div class="navbar-collapse">
+                {
+                    links.map((link) => (
+                        <a href={link.href} set:aria-current={page === link.key ? 'page' : undefined}>
+                            {link.label}
+                        </a>
+                    ))
+                }
+                <a href="/contact" class="contact" set:aria-current={page === 'contact' ? 'page' : undefined}>Let's Be Friends</a>
+            </div>
+            <button class="navbar-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
+                <i class="bx bx-menu"></i>
+            </button>
+        </div>
+    </nav>
+    <div class="navbar-backdrop" aria-hidden="true"></div>
+</header>
