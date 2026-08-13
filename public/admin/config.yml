@@ -2,7 +2,7 @@ backend:
   name: github
   branch: main
   repo: Newibebrah/Jiwaku
-  base_url: https://YOUR_DOMAIN
+  base_url: https://jiwaku-ten.vercel.app
   auth_endpoint: /api/auth
   auth_scope: repo
 

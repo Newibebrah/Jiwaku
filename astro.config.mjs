@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-    site: 'https://YOUR_DOMAIN',
+    site: 'https://jiwaku-ten.vercel.app',
     output: 'static',
 });
