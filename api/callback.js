@@ -31,6 +31,8 @@ export default async function handler(req, res) {
     const clientSecret = process.env.OAUTH_GITHUB_CLIENT_SECRET;
     const callbackUri = `${process.env.OAUTH_BASE_URL || `https://${req.headers.host}`}/api/callback`;
 
+    console.error(`[oauth-callback] code=${code} state=${state} redirectUri=${redirectUri} cb=${callbackUri}`);
+
     const tokenRes = await fetch(GITHUB_TOKEN_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -38,6 +40,7 @@ export default async function handler(req, res) {
     });
 
     const data = await tokenRes.json();
+    console.error(`[oauth-callback] github_response=${JSON.stringify(data)}`);
 
     const fragment = data.access_token
         ? `access_token=${data.access_token}&token_type=${data.token_type || 'bearer'}`
