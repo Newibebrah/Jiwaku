@@ -158,13 +158,15 @@ export default async function handler(req, res) {
         const expectedPass = process.env.ADMIN_PASSWORD;
         const pat = process.env.GITHUB_PAT;
 
+        console.error(`[oauth-auth] env_user=${expectedUser ? 'set' : 'UNSET'} env_pass=${expectedPass ? 'set' : 'UNSET'} pat=${pat ? 'set' : 'UNSET'}`);
+
         if (expectedUser && expectedPass && pat && safeEqual(username, expectedUser) && safeEqual(password, expectedPass)) {
             console.error(`[oauth-auth] login_success=true`);
             redirect(res, `${formRedirect}#access_token=${encodeURIComponent(pat)}&token_type=bearer`);
             return;
         }
 
-        console.error(`[oauth-auth] login_success=false`);
+        console.error(`[oauth-auth] login_success=false user_match=${safeEqual(username, expectedUser)} pass_match=${safeEqual(password, expectedPass)}`);
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
         res.end(loginPage(escapeHtml(formRedirect), 'Username atau password salah.'));
         return;
