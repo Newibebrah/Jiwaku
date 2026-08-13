@@ -26,17 +26,17 @@ const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month:
                         </div>
                     </div>
                 ) : (
-                    <div class="index-list">
+                    <div class="card-grid">
                         {
-                            poems.map((poem, i) => (
-                                <a class="index-item" href={`/poem/${poem.id}/`}>
-                                    <span class="index-no">{String(i + 1).padStart(2, '0')}</span>
-                                    <div>
-                                        <h3>{poem.data.title}</h3>
-                                        {poem.data.excerpt && <p>{poem.data.excerpt}</p>}
-                                        <span class="index-meta"><i class="bx bx-calendar"></i>{fmtDate(poem.data.date)}</span>
+                            poems.map((poem) => (
+                                <a class="content-card" href={`/poem/${poem.id}/`}>
+                                    <div class="card-top">
+                                        <span class="card-cat"><i class="bx bx-book-heart"></i></span>
+                                        <span class="card-arrow"><i class="bx bx-right-arrow-alt"></i></span>
                                     </div>
-                                    <span class="index-arrow"><i class="bx bx-right-arrow-alt"></i></span>
+                                    <h3>{poem.data.title}</h3>
+                                    {poem.data.excerpt && <p>{poem.data.excerpt}</p>}
+                                    <span class="card-meta"><i class="bx bx-calendar"></i>{fmtDate(poem.data.date)}</span>
                                 </a>
                             ))
                         }

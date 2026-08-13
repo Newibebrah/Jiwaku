@@ -26,14 +26,18 @@ const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month:
                         </div>
                     </div>
                 ) : (
-                    <div class="gallery">
+                    <div class="card-grid gallery">
                         {
                             photos.map((photo) => (
-                                <figure class="photo-card">
-                                    <img src={photo.data.image} alt={photo.data.title} loading="lazy" />
-                                    <figcaption class="photo-overlay">
+                                <figure class="content-card photo-card">
+                                    <div class="photo-media">
+                                        <img src={photo.data.image} alt={photo.data.title} loading="lazy" />
+                                    </div>
+                                    <figcaption class="photo-caption">
                                         <h3>{photo.data.title}</h3>
-                                        <span>{photo.data.location || fmtDate(photo.data.date)}</span>
+                                        <span class="card-meta">
+                                            <i class="bx bx-map-pin"></i>{photo.data.location || fmtDate(photo.data.date)}
+                                        </span>
                                     </figcaption>
                                 </figure>
                             ))

@@ -778,80 +778,120 @@ main {
     font-size: 0.88rem;
 }
 
-/* ===== Editorial index (poems / writings) ===== */
+/* ===== Kartu konten (poem / writing) ===== */
 
-.index-list {
+.card-grid {
     display: grid;
-    max-width: 760px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
 }
 
-.index-item {
-    display: grid;
-    grid-template-columns: 64px 1fr auto;
-    align-items: baseline;
-    gap: 1.25rem;
-    padding: 1.5rem 0.5rem;
-    border-bottom: 1px solid var(--color-mist);
+.content-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.6rem 1.7rem 1.4rem;
+    background: #FFFFFF;
+    border: 1px solid var(--color-mist);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
     text-decoration: none;
-    transition: background 0.3s var(--ease-premium), padding-left 0.3s var(--ease-premium);
-}
-
-.index-item:hover {
-    background: linear-gradient(90deg, rgba(27, 111, 176, 0.06), transparent 70%);
-    padding-left: 1rem;
-}
-
-.index-item .index-no {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 1.1rem;
-    color: var(--color-sapphire);
-    opacity: 0.65;
-}
-
-.index-item h3 {
-    font-family: var(--font-serif);
-    font-size: 1.7rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-    color: var(--color-ink);
-    margin-bottom: 0.3rem;
-    transition: color 0.3s var(--ease-premium);
-}
-
-.index-item:hover h3 {
-    color: var(--color-sapphire);
-}
-
-.index-item p {
-    color: var(--color-muted);
-    font-size: 0.95rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
     overflow: hidden;
+    transition: transform 0.3s var(--ease-premium), box-shadow 0.3s var(--ease-premium), border-color 0.3s var(--ease-premium);
 }
 
-.index-item .index-arrow {
-    align-self: center;
-    font-size: 1.4rem;
+.content-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-sapphire), var(--color-emerald));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease-premium);
+}
+
+.content-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-sapphire);
+}
+
+.content-card:hover::before {
+    transform: scaleX(1);
+}
+
+.content-card .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+}
+
+.content-card .card-cat {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--color-sky-soft);
+    color: var(--color-sapphire);
+    font-size: 1.25rem;
+    transition: background 0.3s var(--ease-premium), color 0.3s var(--ease-premium);
+}
+
+.content-card:hover .card-cat {
+    background: linear-gradient(135deg, var(--color-sapphire), var(--color-ocean));
+    color: #FFFFFF;
+}
+
+.content-card .card-arrow {
+    font-size: 1.35rem;
     color: var(--color-sapphire);
     opacity: 0;
     transform: translateX(-8px);
     transition: opacity 0.3s var(--ease-premium), transform 0.3s var(--ease-premium);
 }
 
-.index-item:hover .index-arrow {
+.content-card:hover .card-arrow {
     opacity: 1;
     transform: translateX(0);
 }
 
-.index-meta {
-    display: flex;
+.content-card h3 {
+    font-family: var(--font-serif);
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    color: var(--color-ink);
+    transition: color 0.3s var(--ease-premium);
+}
+
+.content-card:hover h3 {
+    color: var(--color-sapphire);
+}
+
+.content-card > p {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.content-card .card-meta {
+    display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    margin-top: 0.6rem;
+    margin-top: auto;
+    padding-top: 0.9rem;
     font-size: 0.78rem;
     font-weight: 600;
     color: var(--color-emerald-deep);
@@ -859,7 +899,55 @@ main {
     letter-spacing: 0.08em;
 }
 
-.index-item:nth-child(1) { border-top: 2px solid var(--color-mist); }
+/* ===== Kartu foto (photography) ===== */
+
+.gallery {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.photo-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.photo-media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--color-sky-soft);
+}
+
+.photo-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s var(--ease-premium);
+}
+
+.photo-card:hover .photo-media img {
+    transform: scale(1.06);
+}
+
+.photo-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.15rem 1.35rem 1.3rem;
+}
+
+.photo-caption h3 {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-ink);
+}
+
+.photo-caption .card-meta {
+    margin-top: 0;
+    padding-top: 0;
+    color: var(--color-sapphire);
+}
 
 /* ===== Book page (detail poem / writing) ===== */
 
@@ -954,61 +1042,7 @@ main {
     font-size: 1.2rem;
 }
 
-/* ===== Photo gallery — cerah ===== */
-
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.25rem;
-}
-
-.photo-card {
-    position: relative;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    background: #FFFFFF;
-    border: 1px solid var(--color-mist);
-    box-shadow: var(--shadow-sm);
-    aspect-ratio: 4 / 3;
-}
-
-.photo-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s var(--ease-premium);
-}
-
-.photo-card:hover img {
-    transform: scale(1.05);
-}
-
-.photo-card .photo-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 1.1rem;
-    background: linear-gradient(to top, rgba(10, 59, 92, 0.72), transparent 55%);
-    opacity: 1;
-    transition: opacity 0.4s var(--ease-premium);
-}
-
-.photo-card .photo-overlay h3 {
-    font-family: var(--font-serif);
-    color: #FFFFFF;
-    font-size: 1.1rem;
-}
-
-.photo-card .photo-overlay span {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: var(--color-sky);
-    font-size: 0.82rem;
-}
+/* ===== Photo gallery ===== */
 
 @media (max-width: 767px) {
     .wrapper {
@@ -1099,13 +1133,8 @@ main {
         gap: 2rem;
     }
 
-    .index-item {
-        grid-template-columns: 40px 1fr;
-        gap: 0.9rem;
-    }
-
-    .index-item .index-arrow {
-        display: none;
+    .card-grid {
+        grid-template-columns: 1fr;
     }
 
     .book {
