@@ -11,7 +11,7 @@ function getQuery(req) {
 export default async function handler(req, res) {
     const query = getQuery(req);
 
-    const clientId = query.get('client_id') || process.env.OAUTH_GITHUB_CLIENT_ID;
+    const clientId = process.env.OAUTH_GITHUB_CLIENT_ID || query.get('client_id');
     const scope = query.get('scope') || 'repo';
     const provider = query.get('provider') || 'github';
     const state = query.get('state') || '';
