@@ -23,7 +23,12 @@ function safeEqual(a, b) {
     return timingSafeEqual(bufA, bufB);
 }
 
-function loginPage(redirectUri, error) {
+function sendJson(res, status, payload) {
+    res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8' });
+    res.end(JSON.stringify(payload));
+}
+
+function loginPage(provider, siteId, error) {
     return `<!DOCTYPE html>
 <html lang="id">
 <head>
@@ -95,6 +100,7 @@ function loginPage(redirectUri, error) {
         transition: background 0.3s;
     }
     button:hover { background: #087AA0; }
+    button:disabled { opacity: 0.6; cursor: wait; }
     .error {
         background: #FEF2F2;
         border: 1px solid #FECACA;
@@ -104,16 +110,15 @@ function loginPage(redirectUri, error) {
         font-size: 0.88rem;
         margin-bottom: 1.1rem;
     }
-    .hint { margin-top: 1.2rem; font-size: 0.78rem; color: #64748B; text-align: center; }
+    .status { font-size: 0.8rem; color: #64748B; margin-top: 0.6rem; text-align: center; }
 </style>
 </head>
 <body>
     <div class="card">
         <div class="logo">JIWAKU<span>.</span></div>
         <p class="subtitle">Masuk untuk mengelola konten.</p>
-        ${error ? `<div class="error">${error}</div>` : ''}
-        <form method="POST" action="/api/auth">
-            <input type="hidden" name="redirect_uri" value="${redirectUri}">
+        <div id="error" class="error" style="display:none"></div>
+        <form id="loginForm">
             <div class="field">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" autocomplete="username" required autofocus>
@@ -122,56 +127,116 @@ function loginPage(redirectUri, error) {
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" autocomplete="current-password" required>
             </div>
-            <button type="submit">Masuk</button>
+            <button type="submit" id="submitBtn">Masuk</button>
         </form>
-        <p class="hint">Akses dibatasi. Hanya admin yang dapat masuk.</p>
+        <p class="status" id="status">Menghubungkan ke panel admin…</p>
     </div>
+<script>
+(function () {
+    var provider = ${JSON.stringify(provider)};
+    var baseUrl = ${JSON.stringify(siteId)};
+    var handshakeDone = false;
+    var pendingToken = null;
+    var statusEl = document.getElementById('status');
+    var btn = document.getElementById('submitBtn');
+    var errEl = document.getElementById('error');
+
+    function showError(msg) {
+        errEl.textContent = msg;
+        errEl.style.display = 'block';
+    }
+
+    function sendAuthorize() {
+        if (!window.opener) { showError('Popup ini dibuka tanpa jendela induk. Kembali ke panel admin.'); return; }
+        if (!handshakeDone) { pendingToken = pendingToken; return; }
+        var payload = JSON.stringify({ token: pendingToken });
+        window.opener.postMessage('authorization:' + provider + ':success:' + payload, baseUrl);
+        window.close();
+    }
+
+    window.addEventListener('message', function (e) {
+        if (e.origin === baseUrl && e.data === 'authorizing:' + provider) {
+            handshakeDone = true;
+            statusEl.textContent = 'Panel admin terhubung. Silakan masuk.';
+            btn.disabled = false;
+            if (pendingToken) sendAuthorize();
+        }
+    });
+
+    if (window.opener) {
+        window.opener.postMessage('authorizing:' + provider, baseUrl);
+        setTimeout(function () {
+            if (!handshakeDone) {
+                statusEl.textContent = 'Tidak dapat terhubung ke panel admin. Silakan muat ulang.';
+                btn.disabled = false;
+            }
+        }, 4000);
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        errEl.style.display = 'none';
+        btn.disabled = true;
+        statusEl.textContent = 'Memverifikasi…';
+
+        var body = new URLSearchParams();
+        body.set('username', document.getElementById('username').value);
+        body.set('password', document.getElementById('password').value);
+
+        fetch('/api/auth', { method: 'POST', body: body })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.token) {
+                    pendingToken = data.token;
+                    statusEl.textContent = 'Berhasil. Menutup jendela…';
+                    sendAuthorize();
+                } else {
+                    statusEl.textContent = '';
+                    btn.disabled = false;
+                    showError(data.error || 'Username atau password salah.');
+                }
+            })
+            .catch(function () {
+                statusEl.textContent = '';
+                btn.disabled = false;
+                showError('Terjadi kesalahan koneksi.');
+            });
+    });
+})();
+</script>
 </body>
 </html>`;
 }
 
-function escapeHtml(value) {
-    return String(value)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
-
-function redirect(res, location) {
-    res.writeHead(302, { Location: location });
-    res.end();
-}
-
 export default async function handler(req, res) {
     const query = getQuery(req);
-    const redirectUri = query.get('redirect_uri') || '/';
+    const provider = query.get('provider') || 'github';
+    const siteId = query.get('site_id') || '';
+    const configured = (process.env.OAUTH_BASE_URL || '').replace(/\/+$/, '');
+    const baseOrigin = configured || (siteId && siteId.includes('://') ? siteId.replace(/\/+$/, '') : `https://${siteId || req.headers.host}`);
+
+    const expectedUser = process.env.ADMIN_USERNAME;
+    const expectedPass = process.env.ADMIN_PASSWORD;
+    const pat = process.env.GITHUB_PAT;
 
     if (req.method === 'POST') {
         const body = await readBody(req);
         const username = body.get('username');
         const password = body.get('password');
-        const formRedirect = body.get('redirect_uri') || redirectUri;
-
-        const expectedUser = process.env.ADMIN_USERNAME;
-        const expectedPass = process.env.ADMIN_PASSWORD;
-        const pat = process.env.GITHUB_PAT;
 
         console.error(`[oauth-auth] env_user=${expectedUser ? 'set' : 'UNSET'} env_pass=${expectedPass ? 'set' : 'UNSET'} pat=${pat ? 'set' : 'UNSET'}`);
 
         if (expectedUser && expectedPass && pat && safeEqual(username, expectedUser) && safeEqual(password, expectedPass)) {
             console.error(`[oauth-auth] login_success=true`);
-            redirect(res, `${formRedirect}#access_token=${encodeURIComponent(pat)}&token_type=bearer`);
+            sendJson(res, 200, { token: pat });
             return;
         }
 
         console.error(`[oauth-auth] login_success=false user_match=${safeEqual(username, expectedUser)} pass_match=${safeEqual(password, expectedPass)}`);
-        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-        res.end(loginPage(escapeHtml(formRedirect), 'Username atau password salah.'));
+        sendJson(res, 401, { error: 'Username atau password salah.' });
         return;
     }
 
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-    res.end(loginPage(escapeHtml(redirectUri), ''));
+    res.end(loginPage(provider, baseOrigin, ''));
 }
