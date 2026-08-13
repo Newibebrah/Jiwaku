@@ -29,11 +29,12 @@ export default async function handler(req, res) {
 
     const clientId = process.env.OAUTH_GITHUB_CLIENT_ID;
     const clientSecret = process.env.OAUTH_GITHUB_CLIENT_SECRET;
+    const callbackUri = `${process.env.OAUTH_BASE_URL || `https://${req.headers.host}`}/api/callback`;
 
     const tokenRes = await fetch(GITHUB_TOKEN_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ client_id: clientId, client_secret: clientSecret, code }),
+        body: JSON.stringify({ client_id: clientId, client_secret: clientSecret, code, redirect_uri: callbackUri }),
     });
 
     const data = await tokenRes.json();
