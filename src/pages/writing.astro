@@ -9,7 +9,8 @@ const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month:
 <BaseLayout page="writing" title="Writing" description="Kumpulan tulisan dari JIWAKU.">
     <main class="wrapper">
         <section class="page-hero reveal">
-            <h1>Writing<span class="text-accent">.</span></h1>
+            <p class="book-kicker">Manuskrip</p>
+            <h1>Tulisan<span class="text-accent">.</span></h1>
             <p>Placeholder: deskripsi singkat halaman tulisan Anda.</p>
         </section>
 
@@ -25,13 +26,17 @@ const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month:
                         </div>
                     </div>
                 ) : (
-                    <div class="list">
+                    <div class="index-list">
                         {
-                            writings.map((writing) => (
-                                <a class="list-item" href={`/writing/${writing.id}/`}>
-                                    <h3>{writing.data.title}</h3>
-                                    {writing.data.excerpt && <p>{writing.data.excerpt}</p>}
-                                    <span class="list-meta"><i class="bx bx-calendar"></i>{fmtDate(writing.data.date)}</span>
+                            writings.map((writing, i) => (
+                                <a class="index-item" href={`/writing/${writing.id}/`}>
+                                    <span class="index-no">{String(i + 1).padStart(2, '0')}</span>
+                                    <div>
+                                        <h3>{writing.data.title}</h3>
+                                        {writing.data.excerpt && <p>{writing.data.excerpt}</p>}
+                                        <span class="index-meta"><i class="bx bx-calendar"></i>{fmtDate(writing.data.date)}</span>
+                                    </div>
+                                    <span class="index-arrow"><i class="bx bx-right-arrow-alt"></i></span>
                                 </a>
                             ))
                         }
