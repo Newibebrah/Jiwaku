@@ -1160,24 +1160,36 @@ main {
     white-space: pre-line;
 }
 
-.book-body .poem-lines p {
+.book-body .poem-lines p,
+.book-body .poem-lines .align-left,
+.book-body .poem-lines .align-center,
+.book-body .poem-lines .align-right,
+.book-body .poem-lines .align-justify {
     margin-bottom: 0;
     padding-top: 1.2rem;
 }
 
-.js .book-body .poem-lines p {
+.book-body .poem-lines > :first-child {
+    padding-top: 0;
+}
+
+.js .book-body .poem-lines p,
+.js .book-body .poem-lines .align-left,
+.js .book-body .poem-lines .align-center,
+.js .book-body .poem-lines .align-right,
+.js .book-body .poem-lines .align-justify {
     opacity: 0;
     transform: translateY(18px);
     transition: opacity 0.7s var(--ease-editorial), transform 0.7s var(--ease-editorial);
 }
 
-.js .book-body .poem-lines p.is-visible {
+.js .book-body .poem-lines p.is-visible,
+.js .book-body .poem-lines .align-left.is-visible,
+.js .book-body .poem-lines .align-center.is-visible,
+.js .book-body .poem-lines .align-right.is-visible,
+.js .book-body .poem-lines .align-justify.is-visible {
     opacity: 1;
     transform: none;
-}
-
-.book-body .poem-lines p:first-of-type {
-    padding-top: 0;
 }
 
 /* ===== Writing — artikel majalah ===== */

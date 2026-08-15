@@ -179,7 +179,7 @@ function initFragment() {
 }
 
 function initPoemStanzas() {
-    const stanzas = document.querySelectorAll('.poem-lines p');
+    const stanzas = document.querySelectorAll('.poem-lines p, .poem-lines .align-left, .poem-lines .align-center, .poem-lines .align-right, .poem-lines .align-justify');
     if (!stanzas.length) return;
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

@@ -38,12 +38,7 @@ collections:
       - { label: "Baris Pembuka", name: "excerpt", widget: "text" }
       - label: "Isi Puisi"
         name: body
-        widget: markdown
-        editor_components:
-          - align-left
-          - align-center
-          - align-right
-          - align-justify
+        widget: poem-editor
 
   - name: writings
     label: Tulisan
