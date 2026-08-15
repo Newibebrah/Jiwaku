@@ -22,16 +22,14 @@ Teluk terungkap di bawah janji
 
 Masih saja kulihat punggung yang sama
 
-
-
 hahaa
+
+
 
 hahahahah
 
 ahhaaaaaaa
 
 ahhhhhhhhh
-
-
 
 alka
