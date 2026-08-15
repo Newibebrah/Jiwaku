@@ -1119,21 +1119,27 @@ main {
 
 .magazine-title {
     font-family: var(--font-sans);
-    font-weight: 800;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+    font-weight: 700;
+    font-size: clamp(1.75rem, 2.8vw, 2.4rem);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    margin-bottom: 0.6rem;
+}
+
+.magazine .detail-meta {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
 }
 
 .pull-quote {
-    margin: 0 0 2rem;
-    padding: 0.35rem 0 0.35rem 1.75rem;
+    margin: 0 0 1.5rem;
+    padding: 0.25rem 0 0.25rem 1.5rem;
     border-left: 3px solid var(--color-primary);
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: 1.55rem;
+    font-size: 1.3rem;
     font-weight: 500;
-    line-height: 1.55;
+    line-height: 1.5;
     color: var(--color-primary);
     column-span: all;
 }
@@ -1142,12 +1148,12 @@ main {
     column-count: 2;
     column-gap: 3rem;
     column-rule: 1px solid rgba(27, 111, 176, 0.3);
-    font-size: 1.125rem;
-    line-height: 1.8;
+    font-size: 1.05rem;
+    line-height: 1.62;
 }
 
 .magazine-body p {
-    margin-bottom: 1.8rem;
+    margin-bottom: 1.3rem;
     text-indent: 1.5rem;
 }
 
