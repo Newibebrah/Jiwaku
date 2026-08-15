@@ -1144,7 +1144,7 @@ main {
 .book-body .poem-lines {
     font-family: var(--font-serif);
     font-size: 1.12rem;
-    line-height: 1;
+    line-height: 2;
     color: var(--color-ink);
     text-align: left;
 }
