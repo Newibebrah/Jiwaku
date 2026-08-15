@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
+import { renderPoemHtml } from '../../lib/render-poem.js';
 
 export async function getStaticPaths() {
     const poems = await getCollection('poems');
@@ -11,7 +12,7 @@ export async function getStaticPaths() {
 }
 
 const { poem } = Astro.props;
-const { Content } = await render(poem);
+const poemHtml = renderPoemHtml(poem.body);
 const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
 ---
 
@@ -24,7 +25,7 @@ const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month:
                 <h1 class="detail-title poem-title">{poem.data.title}</h1>
                 <p class="detail-meta"><i class="bx bx-calendar"></i>{fmtDate(poem.data.date)}</p>
                 <div class="book-body">
-                    <div class="poem-lines"><Content /></div>
+                    <div class="poem-lines" set:html={poemHtml}></div>
                 </div>
             </article>
         </section>
