@@ -30,8 +30,9 @@ const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month:
                         {
                             photos.map((photo, i) => {
                                 const cls = (i % 4 === 0) ? 'span-2' : (i % 4 === 3) ? 'tall' : '';
+                                const batch = JSON.stringify([photo.data.image, ...photo.data.images]);
                                 return (
-                                    <button type="button" class={`photo-tile reveal ${cls}`} style={`--i: ${i}`} data-full={photo.data.image} data-title={photo.data.title} data-caption={photo.data.caption || photo.data.location || ''} aria-label={`Buka ${photo.data.title}`}>
+                                    <button type="button" class={`photo-tile reveal ${cls}`} style={`--i: ${i}`} data-batch={batch} data-title={photo.data.title} data-caption={photo.data.caption} data-align={photo.data.align} aria-label={`Buka ${photo.data.title}`}>
                                         <img src={photo.data.image} alt={photo.data.title} loading="lazy" />
                                         <span class="photo-overlay">
                                             <span class="photo-overlay-text">
@@ -51,7 +52,15 @@ const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month:
 
     <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Foto" hidden>
         <button class="lightbox-close" type="button" aria-label="Tutup"><i class="bx bx-x"></i></button>
-        <img class="lightbox-img" src="" alt="" />
-        <p class="lightbox-caption"></p>
+        <button class="lightbox-nav lightbox-prev" type="button" aria-label="Foto sebelumnya"><i class="bx bx-chevron-left"></i></button>
+        <button class="lightbox-nav lightbox-next" type="button" aria-label="Foto berikutnya"><i class="bx bx-chevron-right"></i></button>
+        <div class="lightbox-stage">
+            <img class="lightbox-img" src="" alt="" />
+        </div>
+        <div class="lightbox-panel">
+            <h2 class="lightbox-title"></h2>
+            <p class="lightbox-caption"></p>
+            <span class="lightbox-count"></span>
+        </div>
     </div>
 </BaseLayout>

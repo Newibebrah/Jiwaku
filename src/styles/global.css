@@ -55,6 +55,7 @@ html {
     scroll-behavior: smooth;
     font-size: 100%;
     scroll-snap-type: y proximity;
+    overflow-x: clip;
 }
 
 body {
@@ -65,11 +66,19 @@ body {
     font-size: 1rem;
     line-height: 1.75;
     color: var(--color-text);
+    overflow-x: clip;
     background:
         radial-gradient(1100px 520px at 88% -8%, rgba(46, 155, 214, 0.14), transparent 60%),
         radial-gradient(900px 460px at 4% 108%, rgba(27, 111, 176, 0.12), transparent 60%),
         radial-gradient(700px 380px at 55% 118%, rgba(16, 185, 129, 0.08), transparent 60%),
         var(--color-bg);
+}
+
+main,
+section,
+figure,
+article {
+    min-width: 0;
 }
 
 a:focus-visible,
@@ -1009,12 +1018,68 @@ main {
     border-color: rgba(255, 255, 255, 0.5);
 }
 
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #FFFFFF;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: background 0.3s var(--ease-premium), border-color 0.3s var(--ease-premium);
+}
+
+.lightbox-nav:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.lightbox-prev {
+    left: 1.25rem;
+}
+
+.lightbox-next {
+    right: 1.25rem;
+}
+
+.lightbox-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+}
+
 .lightbox-img {
     max-width: min(92vw, 1400px);
-    max-height: 82vh;
+    max-height: 72vh;
     border-radius: var(--radius-sm);
     box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
     object-fit: contain;
+}
+
+.lightbox-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: min(720px, 92vw);
+}
+
+.lightbox-title {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #FFFFFF;
 }
 
 .lightbox-caption {
@@ -1024,6 +1089,15 @@ main {
     color: #D6EFFA;
     text-align: center;
     max-width: 60ch;
+    white-space: pre-line;
+}
+
+.lightbox-count {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(214, 239, 250, 0.6);
 }
 
 /* ===== Book page (detail poem / writing) ===== */
@@ -1063,22 +1137,26 @@ main {
 }
 
 .poem-title {
-    font-size: clamp(2.6rem, 5vw, 3.5rem);
-    letter-spacing: -0.02em;
+    font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+    letter-spacing: -0.01em;
 }
 
 .book-body .poem-lines {
     white-space: pre-line;
-    font-family: var(--font-sans);
-    font-size: 1.15rem;
-    line-height: 2.2;
+    font-family: var(--font-serif);
+    font-size: 1.12rem;
+    line-height: 1.85;
     color: var(--color-ink);
     text-align: left;
 }
 
+.book-body .poem-lines[data-align="center"] { text-align: center; }
+.book-body .poem-lines[data-align="right"] { text-align: right; }
+.book-body .poem-lines[data-align="justify"] { text-align: justify; }
+
 .book-body .poem-lines p {
     margin-bottom: 0;
-    padding-top: 0.75rem;
+    padding-top: 0.4rem;
 }
 
 .js .book-body .poem-lines p {
@@ -1094,17 +1172,6 @@ main {
 
 .book-body .poem-lines p:first-of-type {
     padding-top: 0;
-}
-
-.book-body .poem-lines p:first-of-type::first-letter {
-    font-family: var(--font-serif);
-    float: left;
-    font-size: 4.4em;
-    line-height: 0.82;
-    font-weight: 700;
-    color: var(--color-primary);
-    padding-right: 0.12em;
-    margin-top: 0.06em;
 }
 
 /* ===== Writing — artikel majalah ===== */
@@ -1152,24 +1219,23 @@ main {
     line-height: 1.62;
 }
 
+.magazine-body[data-align="center"] { text-align: center; }
+.magazine-body[data-align="right"] { text-align: right; }
+.magazine-body[data-align="justify"] { text-align: justify; }
+
 .magazine-body p {
     margin-bottom: 1.3rem;
     text-indent: 1.5rem;
 }
 
-.magazine-body p:first-of-type {
+.magazine-body[data-align="center"] p,
+.magazine-body[data-align="right"] p,
+.magazine-body[data-align="justify"] p {
     text-indent: 0;
 }
 
-.magazine-body p:first-of-type::first-letter {
-    font-family: var(--font-serif);
-    float: left;
-    font-size: 3.2em;
-    line-height: 0.85;
-    font-weight: 700;
-    color: var(--color-primary);
-    padding-right: 0.12em;
-    margin-top: 0.06em;
+.magazine-body p:first-of-type {
+    text-indent: 0;
 }
 
 .book-kicker {
@@ -1383,12 +1449,34 @@ main {
     }
 
     .lightbox {
-        padding: 1.25rem;
+        padding: 1rem;
+    }
+
+    .lightbox-close {
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 42px;
+        height: 42px;
+        font-size: 1.4rem;
+    }
+
+    .lightbox-nav {
+        width: 44px;
+        height: 44px;
+        font-size: 1.6rem;
+    }
+
+    .lightbox-prev {
+        left: 0.75rem;
+    }
+
+    .lightbox-next {
+        right: 0.75rem;
     }
 
     .lightbox-img {
         max-width: 100%;
-        max-height: 70vh;
+        max-height: 64vh;
     }
 
     .lightbox-caption {

@@ -28,7 +28,7 @@ const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month:
                         <blockquote class="pull-quote">&ldquo;{writing.data.excerpt}&rdquo;</blockquote>
                     )
                 }
-                <div class="book-body magazine-body"><Content /></div>
+                <div class="book-body magazine-body" data-align={writing.data.align}><Content /></div>
             </article>
         </section>
     </main>

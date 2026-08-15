@@ -14,12 +14,15 @@ const site = defineCollection({
     }),
 });
 
+const textAlign = z.enum(['left', 'center', 'right', 'justify']).default('left');
+
 const poems = defineCollection({
     loader: glob({ pattern: '*.md', base: './content/poems' }),
     schema: z.object({
         title: z.string(),
         date: z.coerce.date(),
         excerpt: z.string().default(''),
+        align: textAlign,
     }),
 });
 
@@ -29,6 +32,7 @@ const writings = defineCollection({
         title: z.string(),
         date: z.coerce.date(),
         excerpt: z.string().default(''),
+        align: textAlign,
     }),
 });
 
@@ -39,7 +43,9 @@ const photos = defineCollection({
         date: z.coerce.date(),
         location: z.string().default(''),
         image: z.string(),
+        images: z.array(z.string()).default([]),
         caption: z.string().default(''),
+        align: textAlign,
     }),
 });
 
