@@ -19,9 +19,9 @@ const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month:
     <main class="wrapper">
         <section class="section reveal">
             <a class="detail-back" href="/poem"><i class="bx bx-chevron-left"></i> Semua Puisi</a>
-            <article class="book">
+            <article class="book poem-book">
                 <p class="book-kicker">Puisi</p>
-                <h1 class="detail-title">{poem.data.title}</h1>
+                <h1 class="detail-title poem-title">{poem.data.title}</h1>
                 <p class="detail-meta"><i class="bx bx-calendar"></i>{fmtDate(poem.data.date)}</p>
                 <div class="book-body">
                     <div class="poem-lines"><Content /></div>

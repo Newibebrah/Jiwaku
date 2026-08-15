@@ -28,8 +28,8 @@ const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month:
                 ) : (
                     <div class="card-grid">
                         {
-                            writings.map((writing) => (
-                                <a class="content-card" href={`/writing/${writing.id}/`}>
+                            writings.map((writing, i) => (
+                                <a class="content-card reveal" href={`/writing/${writing.id}/`} style={`--i: ${i}`}>
                                     <div class="card-top">
                                         <span class="card-cat"><i class="bx bx-pencil"></i></span>
                                         <span class="card-arrow"><i class="bx bx-right-arrow-alt"></i></span>
@@ -45,6 +45,4 @@ const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month:
             }
         </section>
     </main>
-
-    <div class="vignette" aria-hidden="true"></div>
 </BaseLayout>

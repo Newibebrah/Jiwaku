@@ -1,17 +1,28 @@
+document.documentElement.classList.add('js');
+
 document.addEventListener('DOMContentLoaded', function () {
     const page = document.body.dataset.page || '';
+    const editorialPages = ['poem', 'photography', 'writing'];
+    const isEditorial = editorialPages.indexOf(page) !== -1;
 
     initNavbar();
-    initSpotlightAndParallax();
-    initFragment();
     initReveal();
+
+    if (!isEditorial) {
+        initSpotlightAndParallax();
+        initFragment();
+    }
 
     if (page === 'contact') {
         initContact();
     }
 
     if (page === 'poem') {
-        initPoem();
+        initPoemStanzas();
+    }
+
+    if (page === 'photography') {
+        initLightbox();
     }
 });
 
@@ -167,15 +178,78 @@ function initFragment() {
     }, 7000);
 }
 
-function initPoem() {
-    const bars = document.querySelectorAll('.visualizer span');
-    if (!bars.length) return;
+function initPoemStanzas() {
+    const stanzas = document.querySelectorAll('.poem-lines p');
+    if (!stanzas.length) return;
 
-    bars.forEach(function (bar) {
-        const duration = 900 + Math.random() * 800;
-        const delay = Math.random() * 600;
-        bar.style.animationDuration = duration.toFixed(0) + 'ms';
-        bar.style.animationDelay = '-' + delay.toFixed(0) + 'ms';
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+        stanzas.forEach(function (el) {
+            el.classList.add('is-visible');
+        });
+        return;
+    }
+
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            stanzas.forEach(function (el, i) {
+                setTimeout(function () {
+                    el.classList.add('is-visible');
+                }, i * 150);
+            });
+            observer.disconnect();
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+
+    observer.observe(document.querySelector('.poem-lines'));
+}
+
+function initLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    if (!lightbox) return;
+
+    const img = lightbox.querySelector('.lightbox-img');
+    const caption = lightbox.querySelector('.lightbox-caption');
+    const closeBtn = lightbox.querySelector('.lightbox-close');
+    const tiles = document.querySelectorAll('.photo-tile');
+
+    const openLightbox = function (tile) {
+        const full = tile.getAttribute('data-full');
+        const title = tile.getAttribute('data-title');
+        const cap = tile.getAttribute('data-caption');
+        img.src = full;
+        img.alt = title;
+        caption.textContent = cap || title;
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+    };
+
+    const closeLightbox = function () {
+        lightbox.hidden = true;
+        img.src = '';
+        document.body.style.overflow = '';
+    };
+
+    tiles.forEach(function (tile) {
+        tile.addEventListener('click', function () {
+            openLightbox(tile);
+        });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+
+    lightbox.addEventListener('click', function (event) {
+        if (event.target === lightbox || event.target === img) {
+            closeLightbox();
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeLightbox();
+        }
     });
 }
 

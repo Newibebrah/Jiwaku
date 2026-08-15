@@ -19,14 +19,17 @@ const fmtDate = (d) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month:
     <main class="wrapper">
         <section class="section reveal">
             <a class="detail-back" href="/writing"><i class="bx bx-chevron-left"></i> Semua Tulisan</a>
-            <article class="book">
+            <article class="book magazine">
                 <p class="book-kicker">Manuskrip</p>
-                <h1 class="detail-title">{writing.data.title}</h1>
+                <h1 class="detail-title magazine-title">{writing.data.title}</h1>
                 <p class="detail-meta"><i class="bx bx-calendar"></i>{fmtDate(writing.data.date)}</p>
-                <div class="book-body"><Content /></div>
+                {
+                    writing.data.excerpt && (
+                        <blockquote class="pull-quote">&ldquo;{writing.data.excerpt}&rdquo;</blockquote>
+                    )
+                }
+                <div class="book-body magazine-body"><Content /></div>
             </article>
         </section>
     </main>
-
-    <div class="vignette" aria-hidden="true"></div>
 </BaseLayout>
