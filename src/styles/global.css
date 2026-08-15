@@ -1138,14 +1138,14 @@ main {
 
 .poem-title {
     font-size: clamp(1.7rem, 3.2vw, 2.4rem);
-    letter-spacing: -0.01em;
+    letter-spacing: 1em;
 }
 
 .book-body .poem-lines {
     white-space: pre-line;
     font-family: var(--font-serif);
     font-size: 1.12rem;
-    line-height: 1.85;
+    line-height: 1;
     color: var(--color-ink);
     text-align: left;
 }
@@ -1225,7 +1225,7 @@ main {
 
 .magazine-body p {
     margin-bottom: 1.3rem;
-    text-indent: 1.5rem;
+    text-indent: 1.2rem;
 }
 
 .magazine-body[data-align="center"] p,
