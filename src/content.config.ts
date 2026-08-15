@@ -22,7 +22,6 @@ const poems = defineCollection({
         title: z.string(),
         date: z.coerce.date(),
         excerpt: z.string().default(''),
-        align: textAlign,
     }),
 });
 
@@ -32,7 +31,6 @@ const writings = defineCollection({
         title: z.string(),
         date: z.coerce.date(),
         excerpt: z.string().default(''),
-        align: textAlign,
     }),
 });
 

@@ -36,16 +36,14 @@ collections:
       - { label: "Judul", name: "title", widget: "string" }
       - { label: "Tanggal", name: "date", widget: "datetime" }
       - { label: "Baris Pembuka", name: "excerpt", widget: "text" }
-      - label: "Posisi Teks"
-        name: align
-        widget: select
-        default: left
-        options:
-          - { label: "Kiri", value: "left" }
-          - { label: "Tengah", value: "center" }
-          - { label: "Kanan", value: "right" }
-          - { label: "Rata", value: "justify" }
-      - { label: "Isi Puisi", name: "body", widget: "markdown" }
+      - label: "Isi Puisi"
+        name: body
+        widget: markdown
+        editor_components:
+          - align-left
+          - align-center
+          - align-right
+          - align-justify
 
   - name: writings
     label: Tulisan
@@ -58,16 +56,14 @@ collections:
       - { label: "Judul", name: "title", widget: "string" }
       - { label: "Tanggal", name: "date", widget: "datetime" }
       - { label: "Ringkasan", name: "excerpt", widget: "text" }
-      - label: "Posisi Teks"
-        name: align
-        widget: select
-        default: left
-        options:
-          - { label: "Kiri", value: "left" }
-          - { label: "Tengah", value: "center" }
-          - { label: "Kanan", value: "right" }
-          - { label: "Rata", value: "justify" }
-      - { label: "Isi", name: "body", widget: "markdown" }
+      - label: "Isi"
+        name: body
+        widget: markdown
+        editor_components:
+          - align-left
+          - align-center
+          - align-right
+          - align-justify
 
   - name: photos
     label: Fotografi

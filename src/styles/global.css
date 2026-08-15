@@ -1142,7 +1142,6 @@ main {
 }
 
 .book-body .poem-lines {
-    white-space: pre-line;
     font-family: var(--font-serif);
     font-size: 1.12rem;
     line-height: 1;
@@ -1150,13 +1149,20 @@ main {
     text-align: left;
 }
 
-.book-body .poem-lines[data-align="center"] { text-align: center; }
-.book-body .poem-lines[data-align="right"] { text-align: right; }
-.book-body .poem-lines[data-align="justify"] { text-align: justify; }
+.book-body .poem-lines .align-center { text-align: center; }
+.book-body .poem-lines .align-right { text-align: right; }
+.book-body .poem-lines .align-justify { text-align: justify; }
+
+.book-body .poem-lines .align-left,
+.book-body .poem-lines .align-center,
+.book-body .poem-lines .align-right,
+.book-body .poem-lines .align-justify {
+    white-space: pre-line;
+}
 
 .book-body .poem-lines p {
     margin-bottom: 0;
-    padding-top: 0.4rem;
+    padding-top: 1.2rem;
 }
 
 .js .book-body .poem-lines p {
@@ -1219,18 +1225,18 @@ main {
     line-height: 1.62;
 }
 
-.magazine-body[data-align="center"] { text-align: center; }
-.magazine-body[data-align="right"] { text-align: right; }
-.magazine-body[data-align="justify"] { text-align: justify; }
+.magazine-body .align-center { text-align: center; }
+.magazine-body .align-right { text-align: right; }
+.magazine-body .align-justify { text-align: justify; }
 
 .magazine-body p {
     margin-bottom: 1.3rem;
     text-indent: 1.2rem;
 }
 
-.magazine-body[data-align="center"] p,
-.magazine-body[data-align="right"] p,
-.magazine-body[data-align="justify"] p {
+.magazine-body .align-center p,
+.magazine-body .align-right p,
+.magazine-body .align-justify p {
     text-indent: 0;
 }
 
